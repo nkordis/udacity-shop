@@ -1,10 +1,12 @@
-name: Uda'CityShop [sha tag] - Package with Docker
+name: Uda'CityShop [latest tag] - Package with Docker
 
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the master branch
 on:
   push:
     branches: [master]
+    tags:
+      - 'v*.*.*'
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -17,6 +19,18 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+      -name: Docker meta
+        id: docker_meta
+        uses: crazy-max/ghaction-docker-meta@v1
+        with:
+          # list of Docker images to use as base name for tags
+          images: |
+            nikosko/frontend
+            nikosko/productcatalogservice
+            nikosko/currencyservice
+            nikosko/adservice
+          # add git short SHA as Docker tag
+          tag-sha: true  
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
       - name: Set up Docker Buildx
@@ -33,7 +47,7 @@ jobs:
           file: src/frontend/Dockerfile
           platforms: linux/amd64
           push: true
-          tags: nikosko/frontend:latest
+          tags: ${{ steps.docker_meta.outputs.tags }}
       - name: Build and push
         uses: docker/build-push-action@v2
         with:
@@ -41,7 +55,7 @@ jobs:
           file: src/productcatalogservice/Dockerfile
           platforms: linux/amd64
           push: true
-          tags: nikosko/productcatalogservice:latest
+          tags: ${{ steps.docker_meta.outputs.tags }}
       - name: Build and push
         uses: docker/build-push-action@v2
         with:
@@ -49,7 +63,7 @@ jobs:
           file: src/currencyservice/Dockerfile
           platforms: linux/amd64
           push: true
-          tags: nikosko/currencyservice:latest
+          tags: ${{ steps.docker_meta.outputs.tags }}
       - name: Build and push
         uses: docker/build-push-action@v2
         with:
@@ -57,4 +71,4 @@ jobs:
           file: src/adservice/Dockerfile
           platforms: linux/amd64
           push: true
-          tags: nikosko/adservice:latest
+          tags: ${{ steps.docker_meta.outputs.tags }}
