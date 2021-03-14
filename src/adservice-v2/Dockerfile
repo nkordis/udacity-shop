@@ -20,5 +20,5 @@ WORKDIR /app
 RUN pip install -r requirements.txt
 # Expose the container port
 EXPOSE 9556
-# Run on container start
+# Run on container start 
 CMD ["python", "adservice-v2.py"]
