@@ -27,6 +27,7 @@ jobs:
             nikosko/productcatalogservice
             nikosko/currencyservice
             nikosko/adservice
+            nikosko/adservice-v2
           # add git short SHA as Docker tag
           tag-sha: true
       - name: Set up QEMU
@@ -67,6 +68,14 @@ jobs:
         with:
           context: src/adservice
           file: src/adservice/Dockerfile
+          platforms: linux/amd64
+          push: true
+          tags: ${{ steps.docker_meta.outputs.tags }}
+      - name: Build and push
+        uses: docker/build-push-action@v2
+        with:
+          context: src/adservice-v2
+          file: src/adservice-v2/Dockerfile
           platforms: linux/amd64
           push: true
           tags: ${{ steps.docker_meta.outputs.tags }}

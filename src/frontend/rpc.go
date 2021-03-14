@@ -18,7 +18,8 @@ import (
 	"context"
 	"time"
 
-	pb "github.com/GoogleCloudPlatform/microservices-demo/src/frontend/genproto"
+	//pb "github.com/GoogleCloudPlatform/microservices-demo/src/frontend/genproto"
+	pb  "/genproto"
 
 	"github.com/pkg/errors"
 )
